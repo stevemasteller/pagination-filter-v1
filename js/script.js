@@ -25,6 +25,8 @@ var addLinks = function() {
 		
 		li.appendChild(a);
 		ul.appendChild(li);
+		
+		a.onclick = activateLink;
 	}
 	
 	page[0].appendChild(div);
@@ -40,6 +42,15 @@ var displayStudents = function(offset) {
 			studentElements[i].style.display = "none";
 		}
 	}
+}
+
+// acivate the link clicked
+var activateLink = function() {
+	var linkNumber = this.text;
+	var offset = linkNumber * STUDENTS_PER_PAGE;
+	displayStudents(offset);
+	
+	
 }
 
 // on load
