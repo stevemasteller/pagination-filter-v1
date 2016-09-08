@@ -1,58 +1,51 @@
-// count students
-var studentElements = document.getElementsByClassName("student-item");
-var page = document.getElementsByClassName("page");
-var studentList = document.getElementsByClassName("student-list");
 const STUDENTS_PER_PAGE = 10;
+const ALL_STUDENTS_SELECTOR = 'li.student-item';
 
 // add links based on student count
-var addLinks = function() {
-	var numberOfLinks = Math.ceil( studentElements.length / STUDENTS_PER_PAGE);
+var addLinks = function(numberOfStudents) {
+	var numberOfLinks = Math.ceil( numberOfStudents / STUDENTS_PER_PAGE);
 	
-	var div = document.createElement("div");
-	var ul = document.createElement("ul");
-	var li;
-	var a;
+	var $page = $('div.page');
+	var $new_div = $('<div></div>');
+	var $new_ul = $('<ul></ul>');
+	var $new_li;
+	var $new_a;
 	
-	div.className = "pagination";
-	div.appendChild(ul);
+	$new_div.addClass('pagination');
+	$new_div.append($new_ul);
 	
 	for (i = 0; i < numberOfLinks; i++) {
-		li = document.createElement("li");
-	    a = document.createElement("a");
+		$new_li = $('<li></li>');
+	    $new_a = $('<a></a>');
 		
-		a.href = "#";
-		a.innerText = i;
+		$new_a.attr('href','#');
+		$new_a.text(i);
 		
-		li.appendChild(a);
-		ul.appendChild(li);
+		$new_li.append($new_a);
+		$new_ul.append($new_li);
 		
-		a.onclick = activateLink;
+	 	$new_a.on('click',activateLink);
 	}
 	
-	page[0].appendChild(div);
+	$page.append($new_div);
 }
 
 // display students
-var displayStudents = function(offset) {
-	for (i = 0; i < studentElements.length; i++) {
-		
-		if (i >= offset && i < offset + STUDENTS_PER_PAGE) {
-			studentElements[i].style.display = "inline"; 	// inline is default
-		} else {
-			studentElements[i].style.display = "none";
-		}
-	}
+var displayStudents = function(offset, selector) {
+	$(ALL_STUDENTS_SELECTOR).hide();
+	$(selector).slice(offset, offset + STUDENTS_PER_PAGE).show(); 
 }
 
 // acivate the link clicked
 var activateLink = function() {
 	var linkNumber = this.text;
 	var offset = linkNumber * STUDENTS_PER_PAGE;
-	displayStudents(offset);
-	
-	
+	displayStudents(offset, ALL_STUDENTS_SELECTOR);
+
+	$('div.pagination a.active').removeClass('active');
+	$(this).addClass('active');
 }
 
 // on load
-addLinks();
-displayStudents(0);
+addLinks($(ALL_STUDENTS_SELECTOR).length);
+displayStudents(0, ALL_STUDENTS_SELECTOR);
