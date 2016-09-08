@@ -5,12 +5,6 @@ var studentList = document.getElementsByClassName("student-list");
 const STUDENTS_PER_PAGE = 10;
 
 // add links based on student count
-
-
-var createNewLink = function() {
-	document.body.appendChild(link);
-}
-
 var addLinks = function() {
 	var numberOfLinks = Math.ceil( studentElements.length / STUDENTS_PER_PAGE);
 	
@@ -36,6 +30,18 @@ var addLinks = function() {
 	page[0].appendChild(div);
 }
 
+// display students
+var displayStudents = function(offset) {
+	for (i = 0; i < studentElements.length; i++) {
+		
+		if (i >= offset && i < offset + STUDENTS_PER_PAGE) {
+			studentElements[i].style.display = "inline"; 	// inline is default
+		} else {
+			studentElements[i].style.display = "none";
+		}
+	}
+}
 
 // on load
 addLinks();
+displayStudents(0);
