@@ -20,7 +20,10 @@ var addLinks = function(numberOfStudents) {
 	    $new_a = $('<a></a>');
 		
 		$new_a.attr('href','#');
-		$new_a.text(i);
+		$new_a.text(i + 1);
+		if (i === 0) {
+			$new_a.addClass('active');
+		}
 		
 		$new_li.append($new_a);
 		$new_ul.append($new_li);
@@ -40,7 +43,7 @@ var displayStudents = function(offset) {
 // acivate the link clicked
 var activateLink = function() {
 	var linkNumber = this.text;
-	var offset = linkNumber * STUDENTS_PER_PAGE;
+	var offset = (linkNumber - 1) * STUDENTS_PER_PAGE;
 	displayStudents(offset);
 
 	$('div.pagination a.active').removeClass('active');
