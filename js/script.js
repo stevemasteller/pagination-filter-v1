@@ -1,5 +1,6 @@
-const STUDENTS_PER_PAGE = 10;
-const ALL_STUDENTS_SELECTOR = 'li.student-item';
+const STUDENTS_PER_PAGE = 10;	
+const ALL_STUDENTS_SELECTOR = 'li.student-item';	
+var searchSelector = ALL_STUDENTS_SELECTOR;
 
 // add links based on student count
 var addLinks = function(numberOfStudents) {
@@ -24,28 +25,28 @@ var addLinks = function(numberOfStudents) {
 		$new_li.append($new_a);
 		$new_ul.append($new_li);
 		
-	 	$new_a.on('click',activateLink);
+	 	$new_a.on('click', activateLink);
 	}
 	
 	$page.append($new_div);
 }
 
 // display students
-var displayStudents = function(offset, selector) {
+var displayStudents = function(offset) {
 	$(ALL_STUDENTS_SELECTOR).hide();
-	$(selector).slice(offset, offset + STUDENTS_PER_PAGE).show(); 
+	$(searchSelector).slice(offset, offset + STUDENTS_PER_PAGE).show(); 
 }
 
 // acivate the link clicked
 var activateLink = function() {
 	var linkNumber = this.text;
 	var offset = linkNumber * STUDENTS_PER_PAGE;
-	displayStudents(offset, ALL_STUDENTS_SELECTOR);
+	displayStudents(offset);
 
 	$('div.pagination a.active').removeClass('active');
 	$(this).addClass('active');
 }
 
 // on load
-addLinks($(ALL_STUDENTS_SELECTOR).length);
-displayStudents(0, ALL_STUDENTS_SELECTOR);
+addLinks($(searchSelector).length);
+displayStudents(0);
