@@ -1,12 +1,13 @@
 const STUDENTS_PER_PAGE = 10;	
+const PAGINATION_LOCATION_SELECTOR = 'div.page';
+const SEARCH_LOCATION_SELECTOR = 'div.page-header';
 const ALL_STUDENTS_SELECTOR = 'li.student-item';	
 var searchSelector = ALL_STUDENTS_SELECTOR;
 
 // add links based on student count
-var addLinks = function(numberOfStudents) {
+var addLinksMarkup = function(numberOfStudents) {
 	var numberOfLinks = Math.ceil( numberOfStudents / STUDENTS_PER_PAGE);
 	
-	var $page = $('div.page');
 	var $new_div = $('<div></div>');
 	var $new_ul = $('<ul></ul>');
 	var $new_li;
@@ -31,7 +32,25 @@ var addLinks = function(numberOfStudents) {
 	 	$new_a.on('click', activateLink);
 	}
 	
-	$page.append($new_div);
+	$(PAGINATION_LOCATION_SELECTOR).append($new_div);
+}
+
+// add search markup
+var addSearchMarkup = function() {
+	var $new_div = $('<div></div>');
+	var $new_input = $('<input>');
+	var $new_button = $('<button></button>');
+	
+	$new_div.addClass('student-search');
+	$new_input.attr('placeholder', 'Search for students...');
+	$new_button.text('Search');
+	
+	$new_div.append($new_input);
+	$new_div.append($new_button);
+	
+	$(SEARCH_LOCATION_SELECTOR).append($new_div);
+	
+	$new_button.on('click', activateSearch);
 }
 
 // display students
@@ -50,6 +69,13 @@ var activateLink = function() {
 	$(this).addClass('active');
 }
 
+// perform search
+var activateSearch = function() {
+	
+	alert("activateSearch");
+}
+
 // on load
-addLinks($(searchSelector).length);
+addLinksMarkup($(searchSelector).length);
 displayStudents(0);
+addSearchMarkup();
