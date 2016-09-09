@@ -108,40 +108,29 @@ var activateLink = function() {
 //
 //	called by changes to search input and clicking on search button
 //
-// Note: Using :contains doesn't place the student selectors in the $searchSelected object 
-//		 in the same order they appear in the html. As a result, students often end up on 
-//		 different pages depending on the match string. For example, searching for 'i' puts
-//		 the first student 'iboya vat' on page 4, while searching for 'b' puts her on page 1.
+//	NOTE: 	Decided to use indexOf instead of a regular expression because the search string
+//			is from a user input. This way a bunch of meta characters don't have to be 
+//			escaped.
 
 var activateSearch = function() {
-//	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// convert search box input to lower case
-//	$searchSelected = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + "), " +	// search names for searchString
-//					  STUDENT_EMAIL_SELECTOR + ":contains(" + searchString + ")")		// search emails for searchString
-//					  .parents(ALL_STUDENTS_SELECTOR);									// find parents of matched searches for display
-
-// Matches iboya vat
-//	var string = $(STUDENT_NAME_SELECTOR).html().toLowerCase();
-//	alert(string);
-//	if (string.indexOf(searchString) != -1) {
-//		alert('Matched');
-//	}
-
-	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();			
-	var $newSearch = $('');
+	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// get search string
+	var $newSearch = $('');																// $newSearch is an empty collection
 	
-	$(ALL_STUDENTS_SELECTOR).each( 
+	$(ALL_STUDENTS_SELECTOR).each( 														// iterate over all students			
 		function () {
-			var nameString = $(this).find(STUDENT_NAME_SELECTOR).html().toLowerCase();
-			var emailString = $(this).find(STUDENT_EMAIL_SELECTOR).html().toLowerCase();
-			if (nameString.indexOf(searchString) != -1 || emailString.indexOf(searchString) != -1) {
-				$newSearch = $newSearch.add(this);
+			var nameString = $(this).find(STUDENT_NAME_SELECTOR).html().toLowerCase();	// find name to match 
+			var emailString = $(this).find(STUDENT_EMAIL_SELECTOR).html().toLowerCase();// find email to match
+			if (nameString.indexOf(searchString) != -1 || 								// if searchString in nameString
+				emailString.indexOf(searchString) != -1) {								// or searchString in emailString 
+					
+				$newSearch = $newSearch.add(this);										// on a match add this student to $newSearch
 			}
 		});
 	
-	$searchSelected = $newSearch;
+	$searchSelected = $newSearch;	// set $newSearch to global $searchSelected
 	
-	displayStudents(0);	// no offset, display from beginning
-	removeLinksMarkup();
+	displayStudents(0);				// no offset, display from beginning
+	removeLinksMarkup();			// redo the links
 	addLinksMarkup();
 }
 
