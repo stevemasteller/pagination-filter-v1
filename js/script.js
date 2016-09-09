@@ -102,9 +102,10 @@ var activateLink = function() {
 }
 
 // perform search
-//		converts input to lower case, since the html markup contains no upper case.
+//		converts all strings to lower case for case insensitive search.
 //		finds students with partial matches in names or emails
-//		updates the display and changes the link markup based on number of matched students.
+//		calls displayStudents, removeLinkMarkup, and addLinksMarkup to display
+//		the search results.
 //
 //	called by changes to search input and clicking on search button
 //
@@ -118,8 +119,10 @@ var activateSearch = function() {
 	
 	$(ALL_STUDENTS_SELECTOR).each( 														// iterate over all students			
 		function () {
+			
 			var nameString = $(this).find(STUDENT_NAME_SELECTOR).html().toLowerCase();	// find name to match 
 			var emailString = $(this).find(STUDENT_EMAIL_SELECTOR).html().toLowerCase();// find email to match
+			
 			if (nameString.indexOf(searchString) != -1 || 								// if searchString in nameString
 				emailString.indexOf(searchString) != -1) {								// or searchString in emailString 
 					
