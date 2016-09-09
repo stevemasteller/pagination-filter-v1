@@ -74,7 +74,10 @@ var activateLink = function() {
 // perform search
 var activateSearch = function() {
 	var searchString = $(this).prev().val().toLowerCase();
-	$searchSelector = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + ")").parents(ALL_STUDENTS_SELECTOR);
+	$searchSelector = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + "), " +	// search names for searchString
+						STUDENT_EMAIL_SELECTOR + ":contains(" + searchString + ")")		// search emails for searchString
+						.parents(ALL_STUDENTS_SELECTOR);								// find parents of matched searches
+
 	displayStudents(0);
 }
 
