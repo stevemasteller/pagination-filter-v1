@@ -3,8 +3,8 @@ const PAGINATION_APPEND_SELECTOR = 'div.page';						// location to append pagina
 const SEARCH_APPEND_SELECTOR = 'div.page-header';					// location to append search markup
 const SEARCH_INPUT_SELECTOR = 'input';								// selector to find the search input data
 const ALL_STUDENTS_SELECTOR = 'li.student-item';					// selector	to find all student data
-const STUDENT_NAME_SELECTOR = 'div.student-details h3';				// selector to find all student name data
-const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to find all student email data
+const STUDENT_NAME_SELECTOR = 'div.student-details h3';				// selector to find student name data
+const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to find student email data 
 
 var $searchSelected = $(ALL_STUDENTS_SELECTOR);	// stores current search results, initialized to all students
 
@@ -23,12 +23,11 @@ var addLinksMarkup = function() {
 	var $new_li;
 	var $new_a;
 	
-	// no need for pagination links if only 1 page of students
-	if (numberOfLinks > 1) {
+	if (numberOfLinks > 1) {						// no need for pagination links if only 1 page of students
 		$new_div.addClass('pagination');
 		$new_div.append($new_ul);
 
-		for (i = 0; i < numberOfLinks; i++) {
+		for (i = 0; i < numberOfLinks; i++) {		
 			$new_li = $('<li></li>');
 			$new_a = $('<a></a>');
 			
@@ -115,10 +114,31 @@ var activateLink = function() {
 //		 the first student 'iboya vat' on page 4, while searching for 'b' puts her on page 1.
 
 var activateSearch = function() {
-	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// convert search box input to lower case
-	$searchSelected = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + "), " +	// search names for searchString
-					  STUDENT_EMAIL_SELECTOR + ":contains(" + searchString + ")")		// search emails for searchString
-					  .parents(ALL_STUDENTS_SELECTOR);									// find parents of matched searches for display
+//	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// convert search box input to lower case
+//	$searchSelected = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + "), " +	// search names for searchString
+//					  STUDENT_EMAIL_SELECTOR + ":contains(" + searchString + ")")		// search emails for searchString
+//					  .parents(ALL_STUDENTS_SELECTOR);									// find parents of matched searches for display
+
+// Matches iboya vat
+//	var string = $(STUDENT_NAME_SELECTOR).html().toLowerCase();
+//	alert(string);
+//	if (string.indexOf(searchString) != -1) {
+//		alert('Matched');
+//	}
+
+	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();			
+	var $newSearch = $('');
+	
+	$(ALL_STUDENTS_SELECTOR).each( 
+		function () {
+			var nameString = $(this).find(STUDENT_NAME_SELECTOR).html().toLowerCase();
+			var emailString = $(this).find(STUDENT_EMAIL_SELECTOR).html().toLowerCase();
+			if (nameString.indexOf(searchString) != -1 || emailString.indexOf(searchString) != -1) {
+				$newSearch = $newSearch.add(this);
+			}
+		});
+	
+	$searchSelected = $newSearch;
 	
 	displayStudents(0);	// no offset, display from beginning
 	removeLinksMarkup();
