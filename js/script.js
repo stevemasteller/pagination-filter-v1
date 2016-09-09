@@ -23,26 +23,29 @@ var addLinksMarkup = function() {
 	var $new_li;
 	var $new_a;
 	
-	$new_div.addClass('pagination');
-	$new_div.append($new_ul);
-	
-	for (i = 0; i < numberOfLinks; i++) {
-		$new_li = $('<li></li>');
-	    $new_a = $('<a></a>');
-		
-		$new_a.attr('href','#');
-		$new_a.text(i + 1);
-		if (i === 0) {
-			$new_a.addClass('active');
+	// no need for pagination links if only 1 page of students
+	if (numberOfLinks > 1) {
+		$new_div.addClass('pagination');
+		$new_div.append($new_ul);
+
+		for (i = 0; i < numberOfLinks; i++) {
+			$new_li = $('<li></li>');
+			$new_a = $('<a></a>');
+			
+			$new_a.attr('href','#');
+			$new_a.text(i + 1);
+			if (i === 0) {
+				$new_a.addClass('active');
+			}
+			
+			$new_li.append($new_a);
+			$new_ul.append($new_li);
+			
+			$new_a.on('click', activateLink);
 		}
-		
-		$new_li.append($new_a);
-		$new_ul.append($new_li);
-		
-	 	$new_a.on('click', activateLink);
+
+		$(PAGINATION_APPEND_SELECTOR).append($new_div);
 	}
-	
-	$(PAGINATION_APPEND_SELECTOR).append($new_div);
 }
 
 // add search markup as follows:
