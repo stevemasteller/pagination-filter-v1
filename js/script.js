@@ -1,6 +1,7 @@
 const STUDENTS_PER_PAGE = 10;	
 const PAGINATION_APPEND_SELECTOR = 'div.page';
 const SEARCH_APPEND_SELECTOR = 'div.page-header';
+const SEARCH_INPUT_SELECTOR = 'input';
 const ALL_STUDENTS_SELECTOR = 'li.student-item';	
 const STUDENT_NAME_SELECTOR = 'div.student-details h3';
 const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';
@@ -59,13 +60,14 @@ var addSearchMarkup = function() {
 	
 	$(SEARCH_APPEND_SELECTOR).append($new_div);
 	
-	$new_button.on('click', activateSearch);
+	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch);		// works with cut and paste
+	$new_button.click(activateSearch);							// redundant, left it in just in case there is a condition I missed
 }
 
 // display students
 var displayStudents = function(offset) {
 	$(ALL_STUDENTS_SELECTOR).hide();
-	$searchSelector.slice(offset, offset + STUDENTS_PER_PAGE).show(); 
+	$searchSelector.slice(offset, offset + STUDENTS_PER_PAGE).fadeIn('slow'); 
 }
 
 // acivate the link clicked
@@ -80,13 +82,13 @@ var activateLink = function() {
 
 // perform search
 var activateSearch = function() {
-	var searchString = $(this).prev().val().toLowerCase();
+	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();
 	$searchSelector = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + "), " +	// search names for searchString
 						STUDENT_EMAIL_SELECTOR + ":contains(" + searchString + ")")		// search emails for searchString
-						.parents(ALL_STUDENTS_SELECTOR);								// find parents of matched searches
+						.parents(ALL_STUDENTS_SELECTOR);								// find parents of matched searches for display
 	
-	removeLinksMarkup();
 	displayStudents(0);
+	removeLinksMarkup();
 	addLinksMarkup();
 }
 
