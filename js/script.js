@@ -2,7 +2,9 @@ const STUDENTS_PER_PAGE = 10;
 const PAGINATION_LOCATION_SELECTOR = 'div.page';
 const SEARCH_LOCATION_SELECTOR = 'div.page-header';
 const ALL_STUDENTS_SELECTOR = 'li.student-item';	
-var searchSelector = ALL_STUDENTS_SELECTOR;
+const STUDENT_NAME_SELECTOR = 'div.student-details h3';
+const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';
+var $searchSelector = $(ALL_STUDENTS_SELECTOR);
 
 // add links based on student count
 var addLinksMarkup = function(numberOfStudents) {
@@ -56,7 +58,7 @@ var addSearchMarkup = function() {
 // display students
 var displayStudents = function(offset) {
 	$(ALL_STUDENTS_SELECTOR).hide();
-	$(searchSelector).slice(offset, offset + STUDENTS_PER_PAGE).show(); 
+	$searchSelector.slice(offset, offset + STUDENTS_PER_PAGE).show(); 
 }
 
 // acivate the link clicked
@@ -71,11 +73,12 @@ var activateLink = function() {
 
 // perform search
 var activateSearch = function() {
-	
-	alert("activateSearch");
+	var searchString = $(this).prev().val().toLowerCase();
+	$searchSelector = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + ")").parents(ALL_STUDENTS_SELECTOR);
+	displayStudents(0);
 }
 
 // on load
-addLinksMarkup($(searchSelector).length);
+addLinksMarkup($searchSelector.length);
 displayStudents(0);
 addSearchMarkup();
