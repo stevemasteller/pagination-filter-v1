@@ -1,13 +1,20 @@
 const STUDENTS_PER_PAGE = 10;	
-const PAGINATION_LOCATION_SELECTOR = 'div.page';
-const SEARCH_LOCATION_SELECTOR = 'div.page-header';
+const PAGINATION_APPEND_SELECTOR = 'div.page';
+const SEARCH_APPEND_SELECTOR = 'div.page-header';
 const ALL_STUDENTS_SELECTOR = 'li.student-item';	
 const STUDENT_NAME_SELECTOR = 'div.student-details h3';
 const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';
+
 var $searchSelector = $(ALL_STUDENTS_SELECTOR);
 
+// remove links from markup
+var removeLinksMarkup = function() {
+	$('div.pagination').remove();
+}
+
 // add links based on student count
-var addLinksMarkup = function(numberOfStudents) {
+var addLinksMarkup = function() {
+	var numberOfStudents = $searchSelector.length;
 	var numberOfLinks = Math.ceil( numberOfStudents / STUDENTS_PER_PAGE);
 	
 	var $new_div = $('<div></div>');
@@ -34,7 +41,7 @@ var addLinksMarkup = function(numberOfStudents) {
 	 	$new_a.on('click', activateLink);
 	}
 	
-	$(PAGINATION_LOCATION_SELECTOR).append($new_div);
+	$(PAGINATION_APPEND_SELECTOR).append($new_div);
 }
 
 // add search markup
@@ -50,7 +57,7 @@ var addSearchMarkup = function() {
 	$new_div.append($new_input);
 	$new_div.append($new_button);
 	
-	$(SEARCH_LOCATION_SELECTOR).append($new_div);
+	$(SEARCH_APPEND_SELECTOR).append($new_div);
 	
 	$new_button.on('click', activateSearch);
 }
@@ -77,11 +84,13 @@ var activateSearch = function() {
 	$searchSelector = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + "), " +	// search names for searchString
 						STUDENT_EMAIL_SELECTOR + ":contains(" + searchString + ")")		// search emails for searchString
 						.parents(ALL_STUDENTS_SELECTOR);								// find parents of matched searches
-
+	
+	removeLinksMarkup();
 	displayStudents(0);
+	addLinksMarkup();
 }
 
 // on load
-addLinksMarkup($searchSelector.length);
 displayStudents(0);
+addLinksMarkup();
 addSearchMarkup();
