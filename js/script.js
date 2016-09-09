@@ -65,34 +65,44 @@ var addSearchMarkup = function() {
 }
 
 // display students
+//		hide all students
+//		display students starting at offset
 var displayStudents = function(offset) {
-	$(ALL_STUDENTS_SELECTOR).hide();
-	$searchSelector.slice(offset, offset + STUDENTS_PER_PAGE).fadeIn('slow'); 
+	$(ALL_STUDENTS_SELECTOR).hide();											// hide immediately
+	$searchSelector.slice(offset, offset + STUDENTS_PER_PAGE).fadeIn('slow');	// show slowly
 }
 
 // acivate the link clicked
+//		reads the number of the link
+//		calculates	offset based on link number
+//		displays new set of students
+//		removes 'active' from all links.
+//		sets current link to 'active'
 var activateLink = function() {
-	var linkNumber = this.text;
-	var offset = (linkNumber - 1) * STUDENTS_PER_PAGE;
+	var linkNumber = this.text;	
+	var offset = (linkNumber - 1) * STUDENTS_PER_PAGE;	
 	displayStudents(offset);
 
-	$('div.pagination a.active').removeClass('active');
-	$(this).addClass('active');
+	$('div.pagination a.active').removeClass('active');	// remove all active links
+	$(this).addClass('active');							// set current link to active
 }
 
 // perform search
+//		converts input to lower case
+//		finds students with partial matches in names or emails
+//		updates the display and changes the link markup based on number of matched students.
 var activateSearch = function() {
-	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();
+	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// convert search box input to lower case.
 	$searchSelector = $(STUDENT_NAME_SELECTOR + ":contains(" + searchString + "), " +	// search names for searchString
 						STUDENT_EMAIL_SELECTOR + ":contains(" + searchString + ")")		// search emails for searchString
 						.parents(ALL_STUDENTS_SELECTOR);								// find parents of matched searches for display
 	
-	displayStudents(0);
+	displayStudents(0);	// no offset, display from beginning
 	removeLinksMarkup();
 	addLinksMarkup();
 }
 
 // on load
-displayStudents(0);
+displayStudents(0);		// no offset display from beginning
 addLinksMarkup();
 addSearchMarkup();
