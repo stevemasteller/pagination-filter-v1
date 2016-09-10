@@ -16,7 +16,6 @@ const PAGINATION_APPEND_SELECTOR = 'div.page';						// location to append pagina
 const SEARCH_APPEND_SELECTOR = 'div.page-header';					// location to append search markup
 
 // Search constants
-const SEARCH_INPUT_SELECTOR = 'div.student-search input';			// selector to find the search input data
 const ALL_STUDENTS_SELECTOR = 'li.student-item';					// selector	to find all student data
 const STUDENT_NAME_SELECTOR = 'div.student-details h3';				// selector to find student name data
 const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to find student email data 
@@ -141,7 +140,7 @@ var addSearchMarkup = function() {
 	$(SEARCH_APPEND_SELECTOR).append($new_div);
 	
 	// bind the activateSearch function to the input and the button
-	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch); 	// works with cut and paste
+	$($new_input).bind('input', activateSearch); 	// works with cut and paste
 	$new_button.click( activateSearch);  // redundant, but search will still work if there is a case I missed
 };
 
