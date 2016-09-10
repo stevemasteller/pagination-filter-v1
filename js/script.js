@@ -44,9 +44,9 @@ jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuer
 
 
 // animate header
-//	 makes header grow big and then shrink back to normal size.
-var animateHeader = function () {
-	$('h1.no-match').animate(
+//	 makes no match search message grow big and then shrink back to normal size.
+var animateSearchMessage = function () {
+	$('h1.no-match').animate(	// Didn't make a constant to select animateMessage because it doesn't depend on markup
 		{fontSize: MESSAGE_MAX_SIZE}, (ANIMATION_SPEED / 2)).animate(		// grow big
 			{fontSize: MESSAGE_FONTSIZE}, (ANIMATION_SPEED / 2));			// go back to normal size
 }
@@ -151,7 +151,7 @@ var addSearchMarkup = function() {
 //		hide all students
 //		display students starting at offset
 var displayStudents = function(offset) {
-	animateHeader();
+	animateSearchMessage();
 	
 	// if search comes up empty show no matches message
 	if ($searchSelected.length === 0) {
