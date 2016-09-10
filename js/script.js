@@ -71,7 +71,7 @@ const ANIMATION_SPEED = 300;										// animation speed in milliseconds
 const MESSAGE_FONTSIZE = '1em';										// Original font-size of search message in .css
 const MESSAGE_MAX_SIZE = '1.3em';									// Size search message grows to
 const STUDENT_MARGINLEFT = '0';										// Original margin-left of ALL_STUDENTS_SELECTOR
-const STUDENT_ANIMATION_MARGINLEFT = '-500px';						// Point to start of student animation
+const STUDENT_ANIMATION_MARGINLEFT = '-500px';						// Point to start student animation
 
 //
 //	Internal constants.
