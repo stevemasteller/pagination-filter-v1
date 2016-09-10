@@ -65,7 +65,7 @@ var removeLinksMarkup = function() {
 //				<a>"i + 1"</a>
 //				... i + 2
 //				.........
-//				....i + (# of links)
+//				....# of links
 //			</li>
 //		</ul>
 //	  </div>
