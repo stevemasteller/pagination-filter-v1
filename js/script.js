@@ -49,12 +49,12 @@ var animateSearchMessage = function () {
 	$('h1.no-match').animate(	// Didn't make a constant to select animateMessage because it doesn't depend on markup
 		{fontSize: MESSAGE_MAX_SIZE}, (ANIMATION_SPEED / 2)).animate(		// grow big
 			{fontSize: MESSAGE_FONTSIZE}, (ANIMATION_SPEED / 2));			// go back to normal size
-}
+};
 
 // remove existing pagination links from markup
 var removeLinksMarkup = function() {
 	$('div.pagination').remove();						
-}
+};
 
 // add search markup as follows:
 // 		# of links = numberOfStudents / STUDENTS_PER_PAGE
@@ -91,7 +91,7 @@ var addLinksMarkup = function() {
 		$new_div.append($new_ul);
 
 		// one li a per pagination link
-		for (i = 0; i < numberOfLinks; i++) {		
+		for (var i = 0; i < numberOfLinks; i++) {		
 		
 			// initialize new elements
 			$new_li = $('<li></li>');
@@ -115,7 +115,7 @@ var addLinksMarkup = function() {
 		// attach new elements to the document
 		$(PAGINATION_APPEND_SELECTOR).append($new_div);
 	}
-}
+};
 
 // add search markup as follows:
 //
@@ -143,7 +143,7 @@ var addSearchMarkup = function() {
 	// bind the activateSearch function to the input and the button
 	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch); 	// works with cut and paste
 	$new_button.click( activateSearch);  // redundant, but search will still work if there is a case I missed
-}
+};
 
 // display students
 //		animate header on page change
@@ -163,7 +163,7 @@ var displayStudents = function(offset) {
 	// hide all students then show students on current page
 	$(ALL_STUDENTS_SELECTOR).hide();					
 	$searchSelected.slice(offset, offset + STUDENTS_PER_PAGE).animateShow(); // animateShow extends JQuery.fn
-}
+};
 
 // acivate the link clicked
 //		reads the number of the link from the html
@@ -178,7 +178,7 @@ var activateLink = function() {
 
 	$('div.pagination a.active').removeClass('active');	// remove all active links
 	$(this).addClass('active');							// set current link to active
-}
+};
 
 // perform search
 //		converts all strings to lower case for case insensitive search.
@@ -212,7 +212,7 @@ var activateSearch = function() {
 	displayStudents(0);				// no offset, display from beginning
 	removeLinksMarkup();			// redo the links
 	addLinksMarkup();
-}
+};
 
 // on load
 addSearchMarkup();		// addSearchMarkup must run before displayStudents on load or no match message appears
