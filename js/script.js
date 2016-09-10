@@ -25,10 +25,9 @@ var $searchSelected = $(ALL_STUDENTS_SELECTOR);	// stores current search results
 // animate display of students
 jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuery function
 	animateShow: function () {
-		$(this).show();
 		$(this).animate(
-			{marginLeft: STUDENT_ANIMATION_MARGINLEFT}, 0).animate(	// start instantly
-				{marginLeft: STUDENT_MARGINLEFT}, ANIMATION_SPEED);	// slide in
+			{marginLeft: STUDENT_ANIMATION_MARGINLEFT}, 0).show().animate(	// start off to the side
+				{marginLeft: STUDENT_MARGINLEFT}, ANIMATION_SPEED);			// slide in
 	}
 });
 
