@@ -14,7 +14,7 @@ const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to 
 // Animation constants
 const HEADER_SELECTOR = 'div.page-header h2';						// selector to find the page header
 const ANIMATION_SPEED = 300;										// 1/2 x the animation speed in milliseconds
-const HEADER_FONTSIZE = '22px';										// Original font-size of Header in .css
+const HEADER_FONTSIZE = '1em';										// Original font-size of Header in .css
 const STUDENT_MARGINLEFT = '0';										// Original margin-left of ALL_STUDENTS_SELECTOR
 const STUDENT_ANIMATION_MARGINLEFT = '-500px';						// Point to start animation at
 
@@ -35,7 +35,7 @@ jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuer
 // animate header
 //	 makes header grow big and then shrink back to normal size.
 var animateHeader = function () {
-	$(HEADER_SELECTOR).animate(
+	$('h1.no-match').animate(
 		{fontSize: '1.5em'}, ANIMATION_SPEED).animate(			// grow really big
 			{fontSize: HEADER_FONTSIZE}, ANIMATION_SPEED);		// go back to normal size
 }
