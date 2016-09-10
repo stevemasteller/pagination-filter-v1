@@ -189,8 +189,8 @@ var activateLink = function() {
 //		backspacing through it all.
 
 var activateButtonSearch = function() {
-	$(SEARCH_INPUT_SELECTOR).val('');
 	activateSearch();
+	$(SEARCH_INPUT_SELECTOR).val('');
 };
 
 // perform search
