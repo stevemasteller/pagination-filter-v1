@@ -1,3 +1,13 @@
+/***********************************************************
+*
+*   Pagination filter
+*
+*  Adds pagination and a search function to a page.
+*
+*  Author: Steve Masteller
+*  Email: stevermasteller@gmail.com
+***********************************************************/ 
+
 // Display constants
 const STUDENTS_PER_PAGE = 10;										// number of students to display at one time
 
@@ -6,23 +16,25 @@ const PAGINATION_APPEND_SELECTOR = 'div.page';						// location to append pagina
 const SEARCH_APPEND_SELECTOR = 'div.page-header';					// location to append search markup
 
 // Search constants
-const SEARCH_INPUT_SELECTOR = 'input';								// selector to find the search input data
+const SEARCH_INPUT_SELECTOR = 'div.student-search input';			// selector to find the search input data
 const ALL_STUDENTS_SELECTOR = 'li.student-item';					// selector	to find all student data
 const STUDENT_NAME_SELECTOR = 'div.student-details h3';				// selector to find student name data
 const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to find student email data 
 
 // Animation constants
 const HEADER_SELECTOR = 'div.page-header h2';						// selector to find the page header
-const ANIMATION_SPEED = 300;										// 1/2 x the animation speed in milliseconds
-const HEADER_FONTSIZE = '1em';										// Original font-size of Header in .css
+const ANIMATION_SPEED = 300;										// animation speed in milliseconds
+const MESSAGE_FONTSIZE = '1em';										// Original font-size of search message in .css
+const MESSAGE_MAX_SIZE = '1.3em';									// Size search message grows to
 const STUDENT_MARGINLEFT = '0';										// Original margin-left of ALL_STUDENTS_SELECTOR
-const STUDENT_ANIMATION_MARGINLEFT = '-500px';						// Point to start animation at
+const STUDENT_ANIMATION_MARGINLEFT = '-500px';						// Point to start of student animation
 
 // Global variables
 var $searchSelected = $(ALL_STUDENTS_SELECTOR);	// stores current search results, initialized to all students
 
 
 // animate display of students
+//    upon display, students slide in from the side
 jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuery function
 	animateShow: function () {
 		$(this).animate(
@@ -36,8 +48,8 @@ jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuer
 //	 makes header grow big and then shrink back to normal size.
 var animateHeader = function () {
 	$('h1.no-match').animate(
-		{fontSize: '1.5em'}, ANIMATION_SPEED).animate(			// grow really big
-			{fontSize: HEADER_FONTSIZE}, ANIMATION_SPEED);		// go back to normal size
+		{fontSize: MESSAGE_MAX_SIZE}, (ANIMATION_SPEED / 2)).animate(		// grow big
+			{fontSize: MESSAGE_FONTSIZE}, (ANIMATION_SPEED / 2));			// go back to normal size
 }
 
 // remove existing pagination links from markup
@@ -45,37 +57,63 @@ var removeLinksMarkup = function() {
 	$('div.pagination').remove();						
 }
 
-// add links based on student count
+// add search markup as follows:
+// 		# of links = numberOfStudents / STUDENTS_PER_PAGE
+//
+//	  <div class='pagination'>
+//		<ul>
+//			<li>
+//				<a>"i + 1"</a>
+//				... i + 2
+//				.........
+//				....i + (# of links)
+//			</li>
+//		</ul>
+//	  </div>
+//
+//		bind each <a> to the activateLink function.
+//		append it to the end of the PAGINATION_APPEND_SELECTOR
 var addLinksMarkup = function() {
+	
+	// Determine how many pagination links are needed.
 	var numberOfStudents = $searchSelected.length;
 	var numberOfLinks = Math.ceil( numberOfStudents / STUDENTS_PER_PAGE);
 	
-	var $new_div = $('<div></div>');	// only 1 div so create it outside of the loop
-	var $new_ul = $('<ul></ul>');		// only 1 ul so create it outside of the loop
+	// initialize new elements
+	var $new_div = $('<div class="pagination"></div>');	
+	var $new_ul = $('<ul></ul>');		
 	var $new_li;
 	var $new_a;
 	
 	// no need for pagination links if only 1 page of students
 	if (numberOfLinks > 1) {	
-		$new_div.addClass('pagination');
+	
+		// only one div ul so append outside of loop
 		$new_div.append($new_ul);
 
+		// one li a per pagination link
 		for (i = 0; i < numberOfLinks; i++) {		
+		
+			// initialize new elements
 			$new_li = $('<li></li>');
 			$new_a = $('<a></a>');
 			
+			// add attributes
 			$new_a.attr('href','#');
 			$new_a.text(i + 1);
 			if (i === 0) {
-				$new_a.addClass('active');
+				$new_a.addClass('active'); // first link always the active one when pagination created.
 			}
 			
+			// attach new elements to each other
 			$new_li.append($new_a);
 			$new_ul.append($new_li);
 			
+			// bind activateLink to each a
 			$new_a.click( activateLink );
 		}
 
+		// attach new elements to the document
 		$(PAGINATION_APPEND_SELECTOR).append($new_div);
 	}
 }
@@ -92,17 +130,10 @@ var addLinksMarkup = function() {
 //		bind the input and the button to the activateSearch function.
 var addSearchMarkup = function() {
 	// create new elements
-	var $new_div = $('<div></div>');
-	var $new_input = $('<input>');
-	var $new_button = $('<button></button>');
-	var $new_h1 = $('<h1></h1>');
-	
-	// modify new elements.
-	$new_div.addClass('student-search');
-	$new_input.attr('placeholder', 'Search for students...');
-	$new_button.text('Search');
-	$new_h1.attr('class', 'no-match');
-	$new_h1.text('No Match Found');
+	var $new_div = $('<div class="student-search"></div>');
+	var $new_input = $('<input placeholder="Search for students...">');
+	var $new_button = $('<button>Search</button>');
+	var $new_h1 = $('<h1 class="no-match">No Match Found</h1>');
 	
 	// attach the new elements to the document
 	$new_div.append($new_input);
@@ -110,25 +141,29 @@ var addSearchMarkup = function() {
 	$new_div.append($new_h1);
 	$(SEARCH_APPEND_SELECTOR).append($new_div);
 	
+	// bind the activateSearch function to the input and the button
 	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch); 	// works with cut and paste
-	$new_button.click( activateSearch);  // redundant, left it in just in case there is a condition I missed
+	$new_button.click( activateSearch);  // redundant, but search will still work if there is a case I missed
 }
 
 // display students
 //		animate header on page change
+//		show/hide search message
 //		hide all students
 //		display students starting at offset
 var displayStudents = function(offset) {
 	animateHeader();
 	
+	// if search comes up empty show no matches message
 	if ($searchSelected.length === 0) {
 		$('h1.no-match').show();
 	} else {
 		$('h1.no-match').hide();
 	}
 	
+	// hide all students then show students on current page
 	$(ALL_STUDENTS_SELECTOR).hide();					
-	$searchSelected.slice(offset, offset + STUDENTS_PER_PAGE).animateShow();
+	$searchSelected.slice(offset, offset + STUDENTS_PER_PAGE).animateShow(); // animateShow extends JQuery.fn
 }
 
 // acivate the link clicked
