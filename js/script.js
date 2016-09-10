@@ -142,7 +142,7 @@ var addSearchMarkup = function() {
 	
 	// bind the activateSearch function to the input and the button
 	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch); 	// works with cut and paste
-	$new_button.click( activateButtonSearch);  // redundant, but search will still work if there is a case I missed
+	$new_button.click( activateButtonSearch);  
 };
 
 // display students
