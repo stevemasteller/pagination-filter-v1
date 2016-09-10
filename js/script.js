@@ -1,16 +1,35 @@
+// Display constants
 const STUDENTS_PER_PAGE = 10;										// number of students to display at one time
+
+// Markup selector constants
 const PAGINATION_APPEND_SELECTOR = 'div.page';						// location to append pagination links
 const SEARCH_APPEND_SELECTOR = 'div.page-header';					// location to append search markup
+
+// Search constants
 const SEARCH_INPUT_SELECTOR = 'input';								// selector to find the search input data
 const ALL_STUDENTS_SELECTOR = 'li.student-item';					// selector	to find all student data
 const STUDENT_NAME_SELECTOR = 'div.student-details h3';				// selector to find student name data
 const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to find student email data 
 
+// Animation constants
+const HEADER_SELECTOR = 'div.page-header h2';						// selector to find the page header
+const ANIMATION_SPEED = 300;										// 1/2 x the animation speed in milliseconds
+const HEADER_FONTSIZE = '22px';										// Original font-size of Header in .css
+
+// Global variables
 var $searchSelected = $(ALL_STUDENTS_SELECTOR);	// stores current search results, initialized to all students
+
+// animate header
+//	 makes header grow big and then shrink back to normal size.
+var animateHeader = function () {
+	$(HEADER_SELECTOR).animate(
+		{fontSize: '6em'}, ANIMATION_SPEED).animate(			// grow really big
+			{fontSize: HEADER_FONTSIZE}, ANIMATION_SPEED);		// go back to normal size
+}
 
 // remove existing pagination links from markup
 var removeLinksMarkup = function() {
-	$('div.pagination').remove();
+	$('div.pagination').remove();						
 }
 
 // add links based on student count
@@ -40,7 +59,7 @@ var addLinksMarkup = function() {
 			$new_li.append($new_a);
 			$new_ul.append($new_li);
 			
-			$new_a.on('click', activateLink);
+			$new_a.click( activateLink );
 		}
 
 		$(PAGINATION_APPEND_SELECTOR).append($new_div);
@@ -52,6 +71,7 @@ var addLinksMarkup = function() {
 //	  <div class='student-search'>
 //	    <input placeholder='Search for students...'>
 //	    <button>Search</button>
+//		<h1>No Match Found<h1>
 //	  </div>
 //
 //		append it to the end of the SEARCH_APPEND_SELECTOR
@@ -61,37 +81,48 @@ var addSearchMarkup = function() {
 	var $new_div = $('<div></div>');
 	var $new_input = $('<input>');
 	var $new_button = $('<button></button>');
+	var $new_h1 = $('<h1></h1>');
 	
 	// modify new elements.
 	$new_div.addClass('student-search');
 	$new_input.attr('placeholder', 'Search for students...');
 	$new_button.text('Search');
+	$new_h1.attr('class', 'no-match');
+	$new_h1.text('No Match Found');
 	
 	// attach the new elements to the document
 	$new_div.append($new_input);
 	$new_div.append($new_button);
+	$new_div.append($new_h1);
 	$(SEARCH_APPEND_SELECTOR).append($new_div);
 	
-	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch);		// works with cut and paste
-	$new_button.click(activateSearch);							// redundant, left it in just in case there is a condition I missed
+	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch); 	// works with cut and paste
+	$new_button.click( activateSearch);  // redundant, left it in just in case there is a condition I missed
 }
 
 // display students
+//		animate header on page change
 //		hide all students
 //		display students starting at offset
 var displayStudents = function(offset) {
-	$(ALL_STUDENTS_SELECTOR).hide();											// hide immediately
-	$searchSelected.slice(offset, offset + STUDENTS_PER_PAGE).fadeIn('slow');	// show slowly
+	animateHeader();
+	
+	if ($searchSelected.length === 0) {
+		$('h1.no-match').show();
+	} else {
+		$('h1.no-match').hide();
+	}
+	
+	$(ALL_STUDENTS_SELECTOR).hide();					
+	$searchSelected.slice(offset, offset + STUDENTS_PER_PAGE).show();
 }
 
 // acivate the link clicked
-//		reads the number of the link
+//		reads the number of the link from the html
 //		calculates	offset based on link number
 //		displays new set of students
 //		removes 'active' from all links.
 //		sets current link to 'active'
-//
-//	called by clicking on a pagination link
 var activateLink = function() {
 	var linkNumber = this.text;	
 	var offset = (linkNumber - 1) * STUDENTS_PER_PAGE;	
@@ -107,15 +138,13 @@ var activateLink = function() {
 //		calls displayStudents, removeLinkMarkup, and addLinksMarkup to display
 //		the search results.
 //
-//	called by changes to search input and clicking on search button
-//
 //	NOTE: 	Decided to use indexOf instead of a regular expression because the search string
 //			is from a user input. This way a bunch of meta characters don't have to be 
 //			escaped.
 
 var activateSearch = function() {
 	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// get search string
-	var $newSearch = $('');																// $newSearch is an empty collection
+	var $newSearch = $('');																// $newSearch is empty
 	
 	$(ALL_STUDENTS_SELECTOR).each( 														// iterate over all students			
 		function () {
@@ -126,7 +155,7 @@ var activateSearch = function() {
 			if (nameString.indexOf(searchString) != -1 || 								// if searchString in nameString
 				emailString.indexOf(searchString) != -1) {								// or searchString in emailString 
 					
-				$newSearch = $newSearch.add(this);										// on a match add this student to $newSearch
+				$newSearch = $newSearch.add(this);										// on a match add this student to collection
 			}
 		});
 	
@@ -138,6 +167,6 @@ var activateSearch = function() {
 }
 
 // on load
+addSearchMarkup();		// addSearchMarkup must run before displayStudents on load or no match message appears
 displayStudents(0);		// no offset, display from beginning
 addLinksMarkup();
-addSearchMarkup();
