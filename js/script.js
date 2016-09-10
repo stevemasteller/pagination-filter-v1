@@ -109,7 +109,7 @@ var removeLinksMarkup = function() {
 	$(PAGINATION_SELECTOR).remove();						
 };
 
-// add search markup as follows:
+// add pagination markup as follows:
 // 		# of links = numberOfStudents / STUDENTS_PER_PAGE
 //
 //	  <div class='pagination'>
