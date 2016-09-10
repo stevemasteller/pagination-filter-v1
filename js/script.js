@@ -6,8 +6,54 @@
 *
 *  Author: Steve Masteller
 *  Email: stevermasteller@gmail.com
+*
+*  Reserved Classes:
+*		pagination
+*		student-search
+*		active
+*
+*
+*---------------------------------------------------------
+*	Student Search HTML markup
+*	
+*	<div class='page-header'>
+*		...
+*		...
+*		...
+*	  <div class='student-search'>
+*	    <input placeholder='Search for students...'>
+*	    <button>Search</button>
+*		<h1>No Match Found<h1>
+*	  </div>
+*	</div>
+*	
+*---------------------------------------------------------
+*	Pagination HTML markup
+*
+*	Note: # of links = (number of students found in HTML markup) / STUDENTS_PER_PAGE
+*
+*	<div class='page'>
+*		...
+*		...
+*		...
+*	  <div class='pagination'>
+*		<ul>
+*			<li>
+*				<a class='active'>1</a>
+*				<a>2</a>
+*				....
+*				....
+*				....# of links
+*			</li>
+*		</ul>
+*	  </div>
+*   </div>
 ***********************************************************/ 
 
+//
+//	External constants.
+//		The following constants may be of interest for HTML markup
+//
 // Display constants
 const STUDENTS_PER_PAGE = 10;										// number of students to display at one time
 
@@ -16,7 +62,6 @@ const PAGINATION_APPEND_SELECTOR = 'div.page';						// location to append pagina
 const SEARCH_APPEND_SELECTOR = 'div.page-header';					// location to append search markup
 
 // Search constants
-const SEARCH_INPUT_SELECTOR = 'div.student-search input';			// selector to find the search input data
 const ALL_STUDENTS_SELECTOR = 'li.student-item';					// selector	to find all student data
 const STUDENT_NAME_SELECTOR = 'div.student-details h3';				// selector to find student name data
 const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to find student email data 
@@ -27,6 +72,14 @@ const MESSAGE_FONTSIZE = '1em';										// Original font-size of search message
 const MESSAGE_MAX_SIZE = '1.3em';									// Size search message grows to
 const STUDENT_MARGINLEFT = '0';										// Original margin-left of ALL_STUDENTS_SELECTOR
 const STUDENT_ANIMATION_MARGINLEFT = '-500px';						// Point to start of student animation
+
+//
+//	Internal constants.
+//		The following constants are not dependent on HTML markup but may be of interest to css
+//
+const SEARCH_INPUT_SELECTOR = 'div.student-search input';			// selector to find the search input data
+const SEARCH_MESSAGE_SELECTOR = 'div.student-search h1';			// selector to find the search message
+const PAGINATION_SELECTOR = 'div.pagination';						// selector to find the pagination
 
 // Global variables
 var $searchSelected = $(ALL_STUDENTS_SELECTOR);	// stores current search results, initialized to all students
@@ -46,14 +99,14 @@ jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuer
 // animate search failure message
 //	 makes no match search message grow big and then shrink back to normal size.
 var animateSearchMessage = function () {
-	$('div.student-search h1').animate(	// Didn't make a constant to select animateMessage because it doesn't depend on markup
+	$(SEARCH_MESSAGE_SELECTOR).animate(	
 		{fontSize: MESSAGE_MAX_SIZE}, (ANIMATION_SPEED / 2)).animate(		// grow big
 			{fontSize: MESSAGE_FONTSIZE}, (ANIMATION_SPEED / 2));			// go back to normal size
 };
 
 // remove existing pagination links from markup
 var removeLinksMarkup = function() {
-	$('div.pagination').remove();						
+	$(PAGINATION_SELECTOR).remove();						
 };
 
 // add search markup as follows:
@@ -154,9 +207,9 @@ var displayStudents = function(offset) {
 	
 	// if search comes up empty show no matches message
 	if ($searchSelected.length === 0) {
-		$('div.student-search h1').show();
+		$(SEARCH_MESSAGE_SELECTOR).show();
 	} else {
-		$('div.student-search h1').hide();
+		$(SEARCH_MESSAGE_SELECTOR).hide();
 	}
 	animateSearchMessage();
 	
@@ -204,7 +257,7 @@ var activateButtonSearch = function() {
 //			escaped.
 
 var activateSearch = function() {
-	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// get search string
+	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();				// get search string
 	var $newSearch = $('');																// $newSearch is empty
 	
 	$(ALL_STUDENTS_SELECTOR).each( 														// iterate over all students			
