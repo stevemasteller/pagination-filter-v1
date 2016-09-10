@@ -22,7 +22,6 @@ const STUDENT_NAME_SELECTOR = 'div.student-details h3';				// selector to find s
 const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to find student email data 
 
 // Animation constants
-const HEADER_SELECTOR = 'div.page-header h2';						// selector to find the page header
 const ANIMATION_SPEED = 300;										// animation speed in milliseconds
 const MESSAGE_FONTSIZE = '1em';										// Original font-size of search message in .css
 const MESSAGE_MAX_SIZE = '1.3em';									// Size search message grows to
