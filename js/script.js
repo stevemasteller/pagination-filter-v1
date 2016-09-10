@@ -198,20 +198,20 @@ var addSearchMarkup = function() {
 	$new_button.click( activateButtonSearch);  
 };
 
-// display students
-//		animate header on page change
+// display students on page change
 //		show/hide search message
+//		animate search message
 //		hide all students
-//		display students starting at offset
+//		display and animate students starting at offset
 var displayStudents = function(offset) {
 	
 	// if search comes up empty show no matches message
 	if ($searchSelected.length === 0) {
 		$(SEARCH_MESSAGE_SELECTOR).show();
+		animateSearchMessage();
 	} else {
 		$(SEARCH_MESSAGE_SELECTOR).hide();
 	}
-	animateSearchMessage();
 	
 	// hide all students then show students on current page
 	$(ALL_STUDENTS_SELECTOR).hide();					
@@ -239,8 +239,7 @@ var activateLink = function() {
 //		the button search clears the input value. Thus
 //		if one were to cut and paste a huge amount of data
 //		into the input it can be easily cleared without
-//		backspacing through it all.
-
+//		backspacing through it all or reloading the page.
 var activateButtonSearch = function() {
 	activateSearch();
 	$(SEARCH_INPUT_SELECTOR).val('');
@@ -255,9 +254,8 @@ var activateButtonSearch = function() {
 //	NOTE: 	Decided to use indexOf instead of a regular expression because the search string
 //			is from a user input. This way a bunch of meta characters don't have to be 
 //			escaped.
-
 var activateSearch = function() {
-	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();				// get search string
+	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// get search string
 	var $newSearch = $('');																// $newSearch is empty
 	
 	$(ALL_STUDENTS_SELECTOR).each( 														// iterate over all students			
