@@ -15,15 +15,29 @@ const STUDENT_EMAIL_SELECTOR = 'div.student-details span.email';	// selector to 
 const HEADER_SELECTOR = 'div.page-header h2';						// selector to find the page header
 const ANIMATION_SPEED = 300;										// 1/2 x the animation speed in milliseconds
 const HEADER_FONTSIZE = '22px';										// Original font-size of Header in .css
+const STUDENT_MARGINLEFT = '0';										// Original margin-left of ALL_STUDENTS_SELECTOR
+const STUDENT_ANIMATION_MARGINLEFT = '-500px';						// Point to start animation at
 
 // Global variables
 var $searchSelected = $(ALL_STUDENTS_SELECTOR);	// stores current search results, initialized to all students
+
+
+// animate display of students
+jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuery function
+	animateShow: function () {
+		$(this).show();
+		$(this).animate(
+			{marginLeft: STUDENT_ANIMATION_MARGINLEFT}, 0).animate(	// start instantly
+				{marginLeft: STUDENT_MARGINLEFT}, ANIMATION_SPEED);	// slide in
+	}
+});
+
 
 // animate header
 //	 makes header grow big and then shrink back to normal size.
 var animateHeader = function () {
 	$(HEADER_SELECTOR).animate(
-		{fontSize: '2em'}, ANIMATION_SPEED).animate(			// grow really big
+		{fontSize: '1.5em'}, ANIMATION_SPEED).animate(			// grow really big
 			{fontSize: HEADER_FONTSIZE}, ANIMATION_SPEED);		// go back to normal size
 }
 
@@ -115,7 +129,7 @@ var displayStudents = function(offset) {
 	}
 	
 	$(ALL_STUDENTS_SELECTOR).hide();					
-	$searchSelected.slice(offset, offset + STUDENTS_PER_PAGE).show();
+	$searchSelected.slice(offset, offset + STUDENTS_PER_PAGE).animateShow();
 }
 
 // acivate the link clicked
