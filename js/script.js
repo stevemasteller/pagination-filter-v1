@@ -142,7 +142,7 @@ var addSearchMarkup = function() {
 	
 	// bind the activateSearch function to the input and the button
 	$(SEARCH_INPUT_SELECTOR).bind('input', activateSearch); 	// works with cut and paste
-	$new_button.click( activateSearch);  // redundant, but search will still work if there is a case I missed
+	$new_button.click( activateButtonSearch);  // redundant, but search will still work if there is a case I missed
 };
 
 // display students
@@ -178,6 +178,19 @@ var activateLink = function() {
 
 	$('div.pagination a.active').removeClass('active');	// remove all active links
 	$(this).addClass('active');							// set current link to active
+};
+
+// perform button search
+//
+// 		in addition to the normal activate search
+//		the button search clears the input value. Thus
+//		if one were to cut and paste a huge amount of data
+//		into the input it can be easily cleared without
+//		backspacing through it all.
+
+var activateButtonSearch = function() {
+	$(SEARCH_INPUT_SELECTOR).val('');
+	activateSearch();
 };
 
 // perform search
