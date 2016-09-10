@@ -151,7 +151,6 @@ var addSearchMarkup = function() {
 //		hide all students
 //		display students starting at offset
 var displayStudents = function(offset) {
-	animateSearchMessage();
 	
 	// if search comes up empty show no matches message
 	if ($searchSelected.length === 0) {
@@ -159,6 +158,7 @@ var displayStudents = function(offset) {
 	} else {
 		$('h1.no-match').hide();
 	}
+	animateSearchMessage();
 	
 	// hide all students then show students on current page
 	$(ALL_STUDENTS_SELECTOR).hide();					
