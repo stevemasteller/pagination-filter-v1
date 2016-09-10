@@ -43,10 +43,10 @@ jQuery.fn.extend({								// wanted to use $(this) in function so extended jQuer
 });
 
 
-// animate header
+// animate search failure message
 //	 makes no match search message grow big and then shrink back to normal size.
 var animateSearchMessage = function () {
-	$('h1.no-match').animate(	// Didn't make a constant to select animateMessage because it doesn't depend on markup
+	$('div.student-search h1').animate(	// Didn't make a constant to select animateMessage because it doesn't depend on markup
 		{fontSize: MESSAGE_MAX_SIZE}, (ANIMATION_SPEED / 2)).animate(		// grow big
 			{fontSize: MESSAGE_FONTSIZE}, (ANIMATION_SPEED / 2));			// go back to normal size
 };
@@ -132,7 +132,7 @@ var addSearchMarkup = function() {
 	var $new_div = $('<div class="student-search"></div>');
 	var $new_input = $('<input placeholder="Search for students...">');
 	var $new_button = $('<button>Search</button>');
-	var $new_h1 = $('<h1 class="no-match">No Match Found</h1>');
+	var $new_h1 = $('<h1>No Match Found</h1>');
 	
 	// attach the new elements to the document
 	$new_div.append($new_input);
@@ -154,9 +154,9 @@ var displayStudents = function(offset) {
 	
 	// if search comes up empty show no matches message
 	if ($searchSelected.length === 0) {
-		$('h1.no-match').show();
+		$('div.student-search h1').show();
 	} else {
-		$('h1.no-match').hide();
+		$('div.student-search h1').hide();
 	}
 	animateSearchMessage();
 	
