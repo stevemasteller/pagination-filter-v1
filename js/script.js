@@ -250,10 +250,6 @@ var activateButtonSearch = function() {
 //		finds students with partial matches in names or emails
 //		calls displayStudents, removeLinkMarkup, and addLinksMarkup to display
 //		the search results.
-//
-//	NOTE: 	Decided to use indexOf instead of a regular expression because the search string
-//			is from a user input. This way a bunch of meta characters don't have to be 
-//			escaped.
 var activateSearch = function() {
 	var searchString = $(SEARCH_INPUT_SELECTOR).val().toLowerCase();					// get search string
 	var $newSearch = $('');																// $newSearch is empty
