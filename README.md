@@ -2,4 +2,4 @@
 
 Uses progressive enhancement to add pagination and a search filter to a page.
 
-My work: jQuery
+My work: javascript, jQuery
